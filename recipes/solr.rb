@@ -59,6 +59,3 @@ template "/opt/solr/solr.xml" do
   action :create
   notifies :restart, resources(:service => "jetty")
 end
-
-# pico solr/solr.xml -> point it to test-core
-# chown -R jetty:jetty /opt/solr
