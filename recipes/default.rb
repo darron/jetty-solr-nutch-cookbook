@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 # Based on: http://pietervogelaar.nl/ubuntu-12-04-install-jetty-9/
+# http://pietervogelaar.nl/ubuntu-12-04-install-solr-4-with-jetty-9/
 
 template "/etc/apt/apt.conf.d/01proxy" do
   source "01proxy.erb"
