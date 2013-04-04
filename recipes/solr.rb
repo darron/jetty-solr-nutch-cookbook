@@ -58,4 +58,5 @@ template "/opt/solr/solr.xml" do
   mode "0644"
   action :create
   notifies :restart, resources(:service => "jetty")
+  not_if { FileTest.exists?("/opt/solr/solr.xml") }
 end
