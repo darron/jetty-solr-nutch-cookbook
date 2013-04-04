@@ -21,5 +21,7 @@ execute "apt-get-update" do
   command "apt-get update"
 end
 
+include_recipe "solr::java"
 include_recipe "solr::jetty"
 include_recipe "solr::solr"
+include_recipe "solr::nutch"
