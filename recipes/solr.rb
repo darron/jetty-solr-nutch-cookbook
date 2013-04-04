@@ -50,7 +50,7 @@ bash "install solr" do
   not_if { FileTest.exists?("/opt/jetty/webapps/solr.war") }
 end
 
-
+# Only install new solr.xml if it's the default install.
 template "/opt/solr/solr.xml" do
   source "solr.erb"
   owner "jetty"
@@ -58,5 +58,5 @@ template "/opt/solr/solr.xml" do
   mode "0644"
   action :create
   notifies :restart, resources(:service => "jetty")
-  not_if { FileTest.exists?("/opt/solr/solr.xml") }
+  only_if "grep collection1 /opt/solr/solr.xml"
 end
