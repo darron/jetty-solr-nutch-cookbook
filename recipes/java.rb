@@ -9,13 +9,13 @@
 
 package "openjdk-7-jdk"
 
-directory "/usr/java" do
+directory "#{node[:java][:prefix]}" do
   owner "root"
   group "root"
   mode 0755
   action :create
 end
 
-link "/usr/java/default" do
+link "#{node[:java][:path]}" do
   to "/usr/lib/jvm/java-7-openjdk-amd64"
 end

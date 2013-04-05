@@ -9,54 +9,61 @@
 
 package "unzip"
 
+cookbook_file "/etc/security/limits.d/solr.conf" do
+  owner "root"
+  group "root"
+  mode "0644"
+  action :create
+end
+
 ark "solr" do
-  url 'http://192.168.2.145:8080/solr-4.2.0.tgz'
+  url "#{node[:solr][:url]}"
   version "4.2.0"
-  owner "jetty"
+  owner "#{node[:jetty][:user]}"
   action :install
 end
 
-directory "/opt/solr" do
-  owner "jetty"
-  group "jetty"
+directory "#{node[:solr][:path]}" do
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
   mode 0755
   action :create
 end
 
-directory "/opt/solr/cores" do
-  owner "jetty"
-  group "jetty"
+directory "#{node[:solr][:path]}/cores" do
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
   mode 0755
   action :create
 end
 
 ark "core1" do
-  url "https://github.com/darron/solr-nutch-core/archive/master.zip"
-  owner "jetty"
+  url "#{node[:solr_core][:url]}"
+  owner "#{node[:jetty][:user]}"
   action :put
-  path "/opt/solr/cores/"
+  path "#{node[:solr][:path]}/cores/"
 end
 
 bash "install solr" do
   user "root"
-  cwd "/opt"
+  cwd "#{node[:solr][:prefix]}"
   code <<-EOH
-    cp /usr/local/solr/dist/solr-4.2.0.war /opt/jetty/webapps/solr.war
-    cp -R /usr/local/solr/example/solr/* /opt/solr/
-    cp -R /usr/local/solr/dist /opt/solr
-    cp -R /usr/local/solr/contrib /opt/solr
-    chown -R jetty.jetty /opt/solr
+    cp /usr/local/solr/dist/solr-4.2.0.war #{node[:jetty][:path]}/webapps/solr.war
+    cp -R /usr/local/solr/example/solr/* #{node[:solr][:path]}
+    cp -R /usr/local/solr/dist #{node[:solr][:path]}
+    cp -R /usr/local/solr/contrib #{node[:solr][:path]}
+    chown -R #{node[:jetty][:user]}.#{node[:jetty][:user]} #{node[:solr][:path]}
   EOH
-  not_if { FileTest.exists?("/opt/jetty/webapps/solr.war") }
+  not_if { FileTest.exists?("#{node[:jetty][:path]}/webapps/solr.war") }
 end
 
 # Only install new solr.xml if it's the default install.
-template "/opt/solr/solr.xml" do
+template "#{node[:solr][:path]}/solr.xml" do
   source "solr.erb"
-  owner "jetty"
-  group "jetty"
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
   mode "0644"
   action :create
   notifies :restart, resources(:service => "jetty")
-  only_if "grep collection1 /opt/solr/solr.xml"
+  only_if "grep collection1 #{node[:solr][:path]}/solr.xml"
 end

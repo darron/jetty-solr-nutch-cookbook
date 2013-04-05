@@ -10,9 +10,9 @@
 package "patch"
 
 ark "nutch" do
-  url 'http://192.168.2.145:8080/apache-nutch-1.6-bin.tar.gz'
-  path "/opt"
-  owner "jetty"
+  url "#{node[:nutch][:url]}"
+  path "#{node[:nutch][:prefix]}"
+  owner "#{node[:jetty][:user]}"
   action :put
 end
 
@@ -21,11 +21,14 @@ template "/etc/profile.d/java.sh" do
   owner "root"
   group "root"
   mode "0644"
+  variables(
+    :java_path => node[:java][:path]
+  )
   action :create
 end
 
 # Patch broken crawl script.
-cookbook_file "/opt/nutch/bin/nutch-patch.txt" do
+cookbook_file "#{node[:nutch][:path]}/bin/nutch-patch.txt" do
   owner "root"
   group "root"
   mode "0644"
@@ -34,17 +37,17 @@ end
 
 bash "patch nutch" do
   user "root"
-  cwd "/opt/nutch/bin"
+  cwd "#{node[:nutch][:path]}/bin"
   code <<-EOH
     patch < nutch-patch.txt
     touch patched
   EOH
-  not_if {File.exists?("/opt/nutch/bin/patched")}
+  not_if {File.exists?("#{node[:nutch][:path]}/bin/patched")}
 end
 
 bash "source java profile" do
   user "root"
-  cwd "/opt"
+  cwd "/tmp"
   code <<-EOH
     source /etc/profile.d/java.sh
   EOH

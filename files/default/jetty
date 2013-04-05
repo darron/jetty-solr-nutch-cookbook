@@ -1,6 +1,0 @@
-JAVA_HOME=/usr/java/default # Path to Java
-NO_START=0 # Start on boot
-JETTY_HOST=0.0.0.0 # Listen to all hosts
-JETTY_PORT=8085 # Run on this port
-JETTY_USER=jetty # Run as this user
-JAVA_OPTIONS="-Dsolr.solr.home=/opt/solr $JAVA_OPTIONS"
