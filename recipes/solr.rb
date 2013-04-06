@@ -77,7 +77,9 @@ template "#{node[:solr][:path]}/install-core.sh" do
   variables(
     :solr_core => node[:solr_core][:url],
     :solr_path => node[:solr][:path],
-    :folder_name => node[:solr_core][:folder_name]
+    :folder_name => node[:solr_core][:folder_name],
+    :jetty_user => node[:jetty][:user],
+    :jetty_port => node[:jetty][:listen_ports]
   )
   action :create
 end
