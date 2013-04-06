@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd <%= @solr_path %>/cores
+
+if [ $1 ];then
+  CORE="$1"
+else
+  echo "You need to name a core."
+  exit
+fi
+
+echo "CORE: $CORE"
+
+curl -s -L <%= @solr_core %> -o $CORE.zip
+unzip $CORE.zip
+mv <%= @folder_name %> $CORE
+rm $CORE.zip

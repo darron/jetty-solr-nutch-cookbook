@@ -8,6 +8,7 @@
 #
 
 package "unzip"
+package "curl"
 
 cookbook_file "/etc/security/limits.d/solr.conf" do
   owner "root"
@@ -66,4 +67,17 @@ template "#{node[:solr][:path]}/solr.xml" do
   action :create
   notifies :restart, resources(:service => "jetty")
   only_if "grep collection1 #{node[:solr][:path]}/solr.xml"
+end
+
+template "#{node[:solr][:path]}/install-core.sh" do
+  source "install-core.erb"
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
+  mode "0755"
+  variables(
+    :solr_core => node[:solr_core][:url],
+    :solr_path => node[:solr][:path],
+    :folder_name => node[:solr_core][:folder_name]
+  )
+  action :create
 end
