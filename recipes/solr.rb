@@ -18,7 +18,7 @@ end
 
 ark "solr" do
   url "#{node[:solr][:url]}"
-  version "4.2.0"
+  version "#{node[:solr][:version]}"
   owner "#{node[:jetty][:user]}"
   action :install
 end
@@ -48,7 +48,7 @@ bash "install solr" do
   user "root"
   cwd "#{node[:solr][:prefix]}"
   code <<-EOH
-    cp /usr/local/solr/dist/solr-4.2.0.war #{node[:jetty][:path]}/webapps/solr.war
+    cp /usr/local/solr/dist/solr-#{node[:solr][:version]}.war #{node[:jetty][:path]}/webapps/solr.war
     cp -R /usr/local/solr/example/solr/* #{node[:solr][:path]}
     cp -R /usr/local/solr/dist #{node[:solr][:path]}
     cp -R /usr/local/solr/contrib #{node[:solr][:path]}
