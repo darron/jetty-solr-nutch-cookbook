@@ -9,17 +9,16 @@
 # Based on: http://pietervogelaar.nl/ubuntu-12-04-install-jetty-9/
 # http://pietervogelaar.nl/ubuntu-12-04-install-solr-4-with-jetty-9/
 
-if node[:apt][:proxy]
-  template "/etc/apt/apt.conf.d/01proxy" do
-    source "01proxy.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables(
-      :apt_proxy_host => node[:apt][:proxy_host]
-    )
-    action :create
-  end
+template "/etc/apt/apt.conf.d/01proxy" do
+  source "01proxy.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :apt_proxy_host => node[:apt][:proxy_host]
+  )
+  action :create
+  only_if { node[:apt][:proxy] == true }
 end
 
 execute "apt-get-update" do
