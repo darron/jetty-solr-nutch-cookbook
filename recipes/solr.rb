@@ -69,8 +69,8 @@ template "#{node[:solr][:path]}/solr.xml" do
   only_if "grep collection1 #{node[:solr][:path]}/solr.xml"
 end
 
-template "#{node[:solr][:path]}/install-core.sh" do
-  source "install-core.erb"
+template "#{node[:solr][:path]}/create-core.sh" do
+  source "create-core.erb"
   owner "#{node[:jetty][:user]}"
   group "#{node[:jetty][:user]}"
   mode "0755"
@@ -80,6 +80,30 @@ template "#{node[:solr][:path]}/install-core.sh" do
     :folder_name => node[:solr_core][:folder_name],
     :jetty_user => node[:jetty][:user],
     :jetty_port => node[:jetty][:listen_ports]
+  )
+  action :create
+end
+
+template "#{node[:solr][:path]}/unload-core.sh" do
+  source "unload-core.erb"
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
+  mode "0755"
+  variables(
+    :solr_path => node[:solr][:path],
+    :jetty_port => node[:jetty][:listen_ports]
+  )
+  action :create
+end
+
+template "#{node[:solr][:path]}/rebuild.sh" do
+  source "rebuild.erb"
+  owner "#{node[:jetty][:user]}"
+  group "#{node[:jetty][:user]}"
+  mode "0755"
+  variables(
+    :solr_path => node[:solr][:path],
+    :jetty_user => node[:jetty][:user]
   )
   action :create
 end
