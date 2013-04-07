@@ -44,7 +44,7 @@ template "/etc/default/jetty" do
     :solr_path => node[:solr][:path]
   )
   action :create
-  notifies :restart, resources(:service => "jetty")
+  notifies :restart, "service[jetty]"
 end
 
 bash "remove insecure apps" do

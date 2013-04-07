@@ -65,7 +65,7 @@ template "#{node[:solr][:path]}/solr.xml" do
   group node[:jetty][:user]
   mode "0644"
   action :create
-  notifies :restart, resources(:service => "jetty")
+  notifies :restart, "service[jetty]"
   only_if "grep collection1 #{node[:solr][:path]}/solr.xml"
 end
 
