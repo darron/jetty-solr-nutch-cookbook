@@ -18,36 +18,36 @@ cookbook_file "/etc/security/limits.d/solr.conf" do
 end
 
 ark "solr" do
-  url "#{node[:solr][:url]}"
-  version "#{node[:solr][:version]}"
-  owner "#{node[:jetty][:user]}"
+  url node[:solr][:url]
+  version node[:solr][:version]
+  owner node[:jetty][:user]
   action :install
 end
 
-directory "#{node[:solr][:path]}" do
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+directory node[:solr][:path] do
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode 0755
   action :create
 end
 
 directory "#{node[:solr][:path]}/cores" do
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode 0755
   action :create
 end
 
 ark "core1" do
-  url "#{node[:solr_core][:url]}"
-  owner "#{node[:jetty][:user]}"
+  url node[:solr_core][:url]
+  owner node[:jetty][:user]
   action :put
   path "#{node[:solr][:path]}/cores/"
 end
 
 bash "install solr" do
   user "root"
-  cwd "#{node[:solr][:prefix]}"
+  cwd node[:solr][:prefix]
   code <<-EOH
     cp /usr/local/solr/dist/solr-#{node[:solr][:version]}.war #{node[:jetty][:path]}/webapps/solr.war
     cp -R /usr/local/solr/example/solr/* #{node[:solr][:path]}
@@ -61,8 +61,8 @@ end
 # Only install new solr.xml if it's the default install.
 template "#{node[:solr][:path]}/solr.xml" do
   source "solr.erb"
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode "0644"
   action :create
   notifies :restart, resources(:service => "jetty")
@@ -71,8 +71,8 @@ end
 
 template "#{node[:solr][:path]}/create-core.sh" do
   source "create-core.erb"
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode "0755"
   variables(
     :solr_core => node[:solr_core][:url],
@@ -86,8 +86,8 @@ end
 
 template "#{node[:solr][:path]}/unload-core.sh" do
   source "unload-core.erb"
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode "0755"
   variables(
     :solr_path => node[:solr][:path],
@@ -98,8 +98,8 @@ end
 
 template "#{node[:solr][:path]}/rebuild.sh" do
   source "rebuild.erb"
-  owner "#{node[:jetty][:user]}"
-  group "#{node[:jetty][:user]}"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
   mode "0755"
   variables(
     :solr_path => node[:solr][:path],

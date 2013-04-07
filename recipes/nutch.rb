@@ -10,9 +10,9 @@
 package "patch"
 
 ark "nutch" do
-  url "#{node[:nutch][:url]}"
-  path "#{node[:nutch][:prefix]}"
-  owner "#{node[:jetty][:user]}"
+  url node[:nutch][:url]
+  path node[:nutch][:prefix]
+  owner node[:jetty][:user]
   action :put
 end
 

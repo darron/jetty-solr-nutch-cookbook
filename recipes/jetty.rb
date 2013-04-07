@@ -7,15 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-user "#{node[:jetty][:user]}" do
+user node[:jetty][:user] do
   comment "Jetty User"
   shell "/bin/false"
 end
 
 ark "jetty" do
-  url "#{node[:jetty][:url]}"
-  path "#{node[:jetty][:prefix]}"
-  owner "#{node[:jetty][:user]}"
+  url node[:jetty][:url]
+  path node[:jetty][:prefix]
+  owner node[:jetty][:user]
   action :put
 end
 
