@@ -22,5 +22,6 @@ else
   chown -R <%= @jetty_user %>.<%= @jetty_user %> <%= @solr_path %>/cores
   CREATE_CURL="http://127.0.0.1:<%= @jetty_port %>/solr/admin/cores?action=CREATE&name=$CORE&instanceDir=/opt/solr/cores/$CORE"
   curl $CREATE_CURL
+  echo "Now edit conf/regex-urlfilter.txt and conf/urls/seed.txt"
 fi
 
