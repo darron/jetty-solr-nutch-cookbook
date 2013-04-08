@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
   # network interface) by any external networks.
   config.vm.network :private_network, ip: "33.33.33.10"
   
-  config.vm.network :forwarded_port, guest: 8085, host: 8085
+  config.vm.network :forwarded_port, guest: 80, host: 8000
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on

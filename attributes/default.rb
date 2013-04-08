@@ -6,7 +6,7 @@ default[:java][:path] = "/usr/java/default"
 
 default[:jetty][:prefix] = "/opt"
 default[:jetty][:path] = "/opt/jetty"
-default[:jetty][:listen_ports] = "8085"
+default[:jetty][:listen_ports] = "8080"
 default[:jetty][:user] = "jetty"
 default[:jetty][:url] = "http://10.0.1.10:8080/jetty.tar.gz"
 
