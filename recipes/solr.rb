@@ -107,3 +107,14 @@ template "#{node[:solr][:path]}/rebuild.sh" do
   )
   action :create
 end
+
+template "#{node[:solr][:path]}/README.txt" do
+  source "readme.erb"
+  owner node[:jetty][:user]
+  group node[:jetty][:user]
+  mode "0644"
+  variables(
+    :solr_path => node[:solr][:path]
+  )
+  action :create
+end

@@ -9,11 +9,11 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = "solr-berkshelf"
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "precise-193p374"
+  config.vm.box = "precise-chefv2-392"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://dl.dropbox.com/u/695019/vagrant/precise-193p374.box"
+  config.vm.box_url = "https://dl.dropbox.com/u/695019/vagrant/precise-chefv2-392.box"
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
