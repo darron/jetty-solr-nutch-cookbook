@@ -12,7 +12,7 @@ echo '<cores defaultCoreName="core1" adminPath="/admin/cores" zkClientTimeout="$
 
 cd <%= @solr_path %>/cores
 
-for core in $( ls --ignore=core1 ); do
+for core in $( ls ); do
   echo "<core schema=\"schema.xml\" loadOnStartup=\"true\" instanceDir=\"/opt/solr/cores/$core/\" transient=\"false\" name=\"$core\" config=\"solrconfig.xml\"/>" >> $CONFIG
 done
 
